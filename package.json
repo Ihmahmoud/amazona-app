@@ -1,0 +1,27 @@
+{
+  "dependencies": {
+    "express": "^4.17.1",
+    "react-router-dom": "^6.0.2"
+  },
+  "name": "amazona",
+  "type": "module",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "scripts": {
+    "start":"nodemon --watch backend --exec node --experimental-modules backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ihmahmoud/amazona-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ihmahmoud/amazona-app/issues"
+  },
+  "homepage": "https://github.com/Ihmahmoud/amazona-app#readme",
+  "description": ""
+}
