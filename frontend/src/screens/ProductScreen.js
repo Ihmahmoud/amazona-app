@@ -13,29 +13,31 @@
 
 // export default ProductScreen;
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Rating from '../components/Rating';
 // import data from '../data';
 // import { Link, useParams } from 'react-router-dom';
-import { Link,useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 // import { useDispatch, useSelector } from 'react-redux'
 import { useDispatch, useSelector } from 'react-redux'
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { detailsProdcut } from '../actions/productActions';
 
-
-export default function ProductScreen(props) {
-
+function ProductScreen(props) {
+    const navigate = useNavigate();
     // const params  =  useParams()
-    const {id} = useParams();
+    const { id } = useParams();
     // const product = data.products.find((x) => x._id === props.match.params.id);
     // const product = data.products.find((x)=>x._id===id);
     const dispatch = useDispatch();
     // const productId = props.match.params.id;
+    // const productId = props.match.params.id;
     const productId = id;
-    const productDetails = useSelector(state => state.productDetails);
+    const [qty, setQty] = useState(1)
+    const productDetails = useSelector((state) => state.productDetails);
     const { loading, error, product } = productDetails;
+
     //    if (!product) {
     //         return <div> Product Not Found</div>
     //     }
@@ -43,6 +45,10 @@ export default function ProductScreen(props) {
         dispatch(detailsProdcut(productId));
     }, [dispatch, productId]);
 
+    const addToCartHandler = () => {
+        // props.history.push(`/cart/${productId}?qty=${qty}`);
+        navigate(`/cart/${productId}?qty=${qty}`);
+    };
     return (
         <div>
             {
@@ -100,9 +106,32 @@ export default function ProductScreen(props) {
                                                 </div>
                                             </div>
                                         </li>
-                                        <li>
-                                            <button className="primary block">Add to Cart</button>
-                                        </li>
+                                        {
+                                            product.countInStock > 0 && (
+                                                <>
+                                                    <li>
+                                                        <div className="row">
+                                                            <div>Qty</div>
+                                                            <div>
+                                                                <select value={qty} onChange={e => setQty(e.target.value)}>
+                                                                    {
+                                                                        [...Array(product.countInStock).keys()].map((x) => (
+                                                                            <option key={x + 1} value={x + 1}>{x + 1}</option>
+                                                                        )
+
+                                                                        )
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <button onClick={addToCartHandler} className="primary block">Add to Cart</button>
+                                                    </li>
+                                                </>
+                                            )
+                                        }
+
                                     </ul>
                                 </div>
                             </div>
@@ -115,3 +144,4 @@ export default function ProductScreen(props) {
     )
 }
 
+export default ProductScreen;
